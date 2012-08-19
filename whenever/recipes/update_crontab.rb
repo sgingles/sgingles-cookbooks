@@ -3,11 +3,7 @@ node[:deploy].each do |application, deploy|
     cwd deploy[:current_path]
     user "deploy"
     # We include a sha to work around a whenever bug
-    command "bundle exec whenever --set environment=#{deploy[:rails_env]} --update-crontab #{application}"
+    command "cd #{deploy[:deploy_to]}/current && bundle exec whenever --update-crontab"
     action :run
-
-    only_if do
-      File.exists?(deploy[:current_path])
-    end
   end
 end
